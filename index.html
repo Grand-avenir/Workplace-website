@@ -4511,17 +4511,6 @@ migrateReviewDoc();
 
 /* ---- 远程配置：从 GitHub 拉取 nexus-config.json ---- */
 let REMOTE_CONFIG = null;
-/* 设置默认 AI 提供商（远程配置不可用时使用）*/
-function setDefaultAIProviders(){
-  if(!Object.keys(AI.providers).length){
-    AI.providers = {
-      glm: { name:'智谱 GLM', endpoint:'https://open.bigmodel.cn/api/paas/v4', models:[{id:'glm-4-flash',name:'GLM-4-Flash（免费）'},{id:'glm-4.7-flash',name:'GLM-4.7-Flash（免费）'},{id:'glm-4.7',name:'GLM-4.7'}] },
-      deepseek: { name:'DeepSeek', endpoint:'https://api.deepseek.com', models:[{id:'deepseek-chat',name:'DeepSeek Chat'},{id:'deepseek-reasoner',name:'DeepSeek Reasoner'}] },
-      custom: { name:'自定义', endpoint:'', models:[] }
-    };
-  }
-}
-setDefaultAIProviders();  // 页面加载时设置默认值
 
 async function loadRemoteConfig(){
   if(!GH.isConfigured()) return;
@@ -4612,7 +4601,26 @@ function completePomo(){ pomo.running=false; pomo.remain=pomo.total;
 const AI = {
   cfgKey: 'nexus-ai-cfg',
   chatKey: 'nexus-ai-chat',
-  providers: {},  // 从 GitHub 远程配置加载
+  providers: {  // 默认值，远程配置加载后自动覆盖
+    glm: {
+      name: '智谱 GLM',
+      endpoint: 'https://open.bigmodel.cn/api/paas/v4',
+      models: [
+        { id: 'glm-4-flash', name: 'GLM-4-Flash（免费）' },
+        { id: 'glm-4.7-flash', name: 'GLM-4.7-Flash（免费）' },
+        { id: 'glm-4.7', name: 'GLM-4.7' },
+      ]
+    },
+    deepseek: {
+      name: 'DeepSeek',
+      endpoint: 'https://api.deepseek.com',
+      models: [
+        { id: 'deepseek-chat', name: 'DeepSeek Chat' },
+        { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner' },
+      ]
+    },
+    custom: { name: '自定义', endpoint: '', models: [] }
+  },
   getConfig(){ try { return JSON.parse(localStorage.getItem(this.cfgKey)||'{}'); } catch { return {}; } },
   setConfig(c){ localStorage.setItem(this.cfgKey, JSON.stringify(c)); },
   isConfigured(){ const c=this.getConfig(); return !!(c.endpoint && c.apiKey && c.model); },
