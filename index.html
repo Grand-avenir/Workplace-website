@@ -4492,13 +4492,15 @@ let data = store.load();
 let view = "home";
 
 /* ---- 迁移：确保已有数据中包含版本迭代记录（可复用，云同步后也调用）---- */
+/* ---- 远程配置：从 GitHub 拉取 nexus-config.json ---- */
+var REMOTE_CONFIG = null;
 function migrateReviewDoc(){
   if(!data.review) data.review=[];
   const exists=data.review.some(r=>r.id===92);
   if(!exists){
     // 优先从远程配置加载版本迭代记录，其次从 seed 数据加载
     let doc = null;
-    if(typeof REMOTE_CONFIG!=='undefined' && REMOTE_CONFIG.versionHistory){
+    if(REMOTE_CONFIG && REMOTE_CONFIG.versionHistory){
       doc = structuredClone(REMOTE_CONFIG.versionHistory);
     } else {
       const m=CONFIG.modules.find(x=>x.key==="review");
@@ -4508,9 +4510,6 @@ function migrateReviewDoc(){
   }
 }
 migrateReviewDoc();
-
-/* ---- 远程配置：从 GitHub 拉取 nexus-config.json ---- */
-let REMOTE_CONFIG = null;
 
 async function loadRemoteConfig(){
   if(!GH.isConfigured()) return;
