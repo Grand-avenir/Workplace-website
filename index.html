@@ -583,9 +583,110 @@
   .toast.err { border-color:rgba(255,64,96,.3); }
 
   .hidden { display:none !important; }
+
+  /* ============================================================
+     RESPONSIVE — 多端适配（平板 + 手机）
+     ============================================================ */
+
+  /* ---- 移动端汉堡按钮 + 遮罩 ---- */
+  .menu-toggle { display:none; position:fixed; top:14px; left:14px; z-index:40;
+    width:42px; height:42px; border-radius:12px; border:1px solid var(--border-input);
+    background:var(--surface-card); color:var(--text); cursor:pointer;
+    display:none; place-items:center; box-shadow:var(--shadow-card); }
+  .sidebar-backdrop { display:none; position:fixed; inset:0; z-index:25;
+    background:rgba(0,0,0,.5); opacity:0; transition:opacity .25s; }
+
+  /* ---- 平板适配 (≤1024px) ---- */
+  @media (max-width: 1024px) {
+    :root { --sidebar-w: 220px; }
+    .main { padding: 22px 24px 40px; }
+    .main > #screen { max-width: 100%; }
+    .bento { grid-template-columns: repeat(6, 1fr); }
+    .b3{grid-column:span 3} .b4{grid-column:span 3} .b5{grid-column:span 3}
+    .b6{grid-column:span 6} .b7{grid-column:span 6} .b8{grid-column:span 6} .b12{grid-column:span 6}
+    .mod-layout { grid-template-columns: 1fr; }
+    .ov2-body { grid-template-columns: 1fr; }
+    .modcard-grid { grid-template-columns: repeat(2, 1fr); }
+    .g-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ---- 手机适配 (≤640px) ---- */
+  @media (max-width: 640px) {
+    body { min-width: 0; font-size: 13px; }
+    .menu-toggle { display:grid; }
+    .sidebar-backdrop.show { display:block; opacity:1; }
+
+    .sidebar { transform: translateX(-100%); transition: transform .28s cubic-bezier(.4,0,.2,1);
+      width: 260px; z-index: 35; }
+    .sidebar.open { transform: translateX(0); }
+
+    .main { margin-left: 0; padding: 60px 14px 32px; }
+    .main > #screen { max-width: 100%; }
+    .header { flex-wrap: wrap; gap: 8px; }
+    .header h2 { font-size: 22px; }
+    .header .spacer { flex-basis: 100%; height: 0; }
+
+    .hero-banner { min-height: 160px; padding: 22px 20px; border-radius: var(--radius-card); }
+    .hero-banner .hi { font-size: 24px; }
+    .hero-banner .sub { font-size: 13px; }
+    .hero-banner .hstats { gap: 16px; margin-top: 14px; }
+    .hero-banner .hstat .n { font-size: 18px; }
+    .hero-banner .hstat + .hstat { padding-left: 16px; }
+    .hero-banner .htop { top: 14px; right: 14px; }
+
+    .bento { grid-template-columns: 1fr; gap: 12px; }
+    .b3,.b4,.b5,.b6,.b7,.b8,.b12 { grid-column: span 1; }
+
+    .g-4, .g-3, .g-2, .g-main { grid-template-columns: 1fr; }
+    .modcard-grid { grid-template-columns: 1fr; }
+    .pin-list { grid-template-columns: 1fr !important; }
+    .rings { grid-template-columns: repeat(2, 1fr); }
+    .quick-grid { grid-template-columns: 1fr 1fr; }
+    .pomo .pstats { grid-template-columns: repeat(3, 1fr); }
+    .mod-summary { grid-template-columns: repeat(2, 1fr); }
+
+    .modal { width: 94vw !important; max-width: 94vw; padding: 18px; border-radius: 16px; }
+    .modal h3 { font-size: 17px; }
+    .modal .frow { flex-direction: column; gap: 0; }
+    .modal .frow .field { width: 100%; }
+    .seg .opt { min-width: 0; padding: 8px 6px; font-size: 13px; }
+
+    .lock-card { width: 92vw; padding: 28px 22px; }
+    .lock-card .lc-logo h2 { font-size: 18px; }
+    .lock-card .lc-logo .lc-icon { width: 48px; height: 48px; }
+    .lock-field input { padding: 11px 12px; font-size: 16px; }
+
+    .clock-card { min-height: 140px; padding: 18px 20px; }
+    .clock-card .ctime { font-size: 32px !important; }
+
+    .habit-tb td.hn { max-width: 80px; font-size: 11.5px; }
+    .habit-tb th { font-size: 9.5px; }
+    .habit-tb td.hrate { font-size: 11px; }
+
+    .sec-title { font-size: 13px; margin: 14px 0 8px; }
+
+    .toast { width: 90vw; max-width: 360px; text-align: center; bottom: 16px; }
+
+    .rec .body { gap: 8px; }
+    .rec .rname { font-size: 14px; }
+    .rec .amt { font-size: 14px; }
+
+    .overlay { padding: 0; }
+  }
+
+  /* ---- 超小屏 (≤380px) ---- */
+  @media (max-width: 380px) {
+    .hero-banner .hi { font-size: 20px; }
+    .rings { grid-template-columns: 1fr; }
+    .quick-grid { grid-template-columns: 1fr; }
+    .header h2 { font-size: 19px; }
+  }
 </style>
 </head>
 <body>
+<!-- mobile menu toggle -->
+<button class="menu-toggle" id="menuToggle"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></button>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 <div class="layout">
   <!-- sidebar -->
   <aside class="sidebar">
@@ -1588,7 +1689,7 @@ function confirmDelete(key,id){ const item=(data[key]||[]).find(i=>i.id==id); if
 
 /* ---------- router / sidebar ---------- */
 function dateStr(){ const n=new Date(); const wd="日一二三四五六"[n.getDay()]; return `${n.getFullYear()}年${n.getMonth()+1}月${n.getDate()}日 周${wd}`; }
-function go(v){ view=v; searchQ=""; renderNavActive(); render(); window.scrollTo({top:0}); }
+function go(v){ view=v; searchQ=""; renderNavActive(); render(); window.scrollTo({top:0}); closeSidebar(); }
 function render(){ if(view==="home") renderHome(); else if(view==="insight") renderInsight(); else renderModule(view); }
 
 function buildNav(){
@@ -1602,6 +1703,12 @@ function buildNav(){
   renderNavActive();
 }
 function renderNavActive(){ $("#nav").querySelectorAll(".navi").forEach(el=>el.classList.toggle("active", el.dataset.go===view)); }
+
+/* ---------- mobile sidebar toggle ---------- */
+function openSidebar(){ $(".sidebar").classList.add("open"); $("#sidebarBackdrop").classList.add("show"); }
+function closeSidebar(){ $(".sidebar").classList.remove("open"); $("#sidebarBackdrop").classList.remove("show"); }
+$("#menuToggle").onclick = () => { $(".sidebar").classList.contains("open") ? closeSidebar() : openSidebar(); };
+$("#sidebarBackdrop").onclick = closeSidebar;
 
 /* ---------- avatar upload ---------- */
 $("#avaCam").innerHTML = icon("camera",18);
