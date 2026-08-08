@@ -3,7 +3,7 @@
 <html lang="zh" data-theme="light" class=""><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>辞忧 · 个人工作台</title>
+<title>NEXUS · 个人指挥中心</title>
 <style>
   /* ============================================================
      THEME TOKENS — 科幻·赛博朋克暗色主题（Neon Cyan / Deep Space）
@@ -744,6 +744,20 @@
   .ai-typing span { width:6px; height:6px; border-radius:50%; background:var(--text-tertiary); animation:ai-bounce 1.2s infinite; }
   .ai-typing span:nth-child(2){ animation-delay:.2s; } .ai-typing span:nth-child(3){ animation-delay:.4s; }
   @keyframes ai-bounce { 0%,60%,100%{ transform:translateY(0); opacity:.5; } 30%{ transform:translateY(-6px); opacity:1; } }
+
+  /* ==================== RAG 向量检索 ==================== */
+  .rag-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:14px; font-size:11px; font-weight:500; cursor:pointer; transition:all .15s; user-select:none; }
+  .rag-badge.on { background:color-mix(in srgb, var(--module-1) 20%, transparent); color:var(--module-1); border:1px solid color-mix(in srgb, var(--module-1) 40%, transparent); }
+  .rag-badge.off { background:var(--surface-card); color:var(--text-tertiary); border:1px solid var(--border); }
+  .rag-badge.loading { background:color-mix(in srgb, var(--accent) 15%, transparent); color:var(--accent); border:1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
+  .rag-panel { margin:12px 0 0; padding:14px 16px; border-radius:12px; background:var(--surface-nested); border:1px solid var(--border); }
+  .rag-stat { display:flex; justify-content:space-between; align-items:center; padding:6px 0; font-size:13px; }
+  .rag-stat .k { color:var(--text-secondary); } .rag-stat .v { color:var(--text); font-weight:500; }
+  .rag-progress { height:4px; border-radius:2px; background:var(--border); overflow:hidden; margin:8px 0; }
+  .rag-progress i { display:block; height:100%; background:var(--accent); border-radius:2px; transition:width .3s; }
+  .rag-refs { margin:8px 0 0; padding:8px 12px; border-radius:8px; background:color-mix(in srgb, var(--module-2) 8%, transparent); border:1px solid color-mix(in srgb, var(--module-2) 20%, transparent); font-size:12px; }
+  .rag-refs .rag-ref-title { color:var(--text-secondary); margin-bottom:4px; font-weight:500; }
+  .rag-refs .rag-ref-item { color:var(--text-tertiary); padding:2px 0; }
 </style>
 <style>.trae-browser-inspect-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:999997;pointer-events:auto;background:rgba(0,0,0,0)}.trae-browser-inspect-highlight-box{position:absolute;top:0;left:0;z-index:999998;display:none}.trae-browser-inspect-highlight-tag{position:absolute;left:0px;top:0px;height:18px;padding:0 6px;box-sizing:border-box;border-radius:4px;background-color:var(--vscode-icube-colorSuccessHover, "#2FB287");color:var(--vscode-icube-colorSnow, "#fff");font-size:12px;font-weight:400;display:none;align-items:center;z-index:999999}.trae-browser-inspect-highlight-box-show{display:flex}.trae-browser-inspect-select-button.trae-browser-inspect-highlight-box-show{display:flex !important}.trae-browser-inspect-select-button{position:absolute;top:0;left:0;background-color:var(--vscode-icube--bg-bg-base-secondary, "#222427");color:var(--vscode-icube--text-text-default-active, "#F5F9FE");font-size:11px;font-weight:500;border:1px solid var(--vscode-icube--border-neutral-l1, "#E0E2F217");border-radius:6px;padding:0 8px;height:32px;display:none;align-items:center;cursor:pointer;z-index:999999;gap:4px}.trae-browser-inspect-select-button svg,.trae-browser-inspect-select-button span{z-index:1}.trae-browser-inspect-select-highlight-box{background:rgba(0,0,0,0) !important}.trae-browser-inspect-select-highlight-box .trae-browser-inspect-highlight-tag{background-color:var(--vscode-icube--status-success-active, "#1E8B56")}.trae-browser-inspect-comment-card-container{position:fixed;top:0;left:0;z-index:9999999;pointer-events:auto}.trae-browser-inspect-comment-card-container .trae-browser-inspect-comment-card{display:flex;padding-top:0px !important;align-items:center;z-index:9999999 !important;background-color:var(--vscode-icube--bg-bg-menu)}*[contenteditable]{outline:none}.trae-browser-inspect-click-effect{position:fixed;width:40px;height:40px;margin-left:-20px;margin-top:-20px;border-radius:50%;background-color:var(--vscode-icube-colorSuccessHover, #2FB287);pointer-events:none;animation:trae-browser-inspect-ripple 500ms ease-out forwards;z-index:999999}@keyframes trae-browser-inspect-ripple{0%{transform:scale(0.3);opacity:.8}100%{transform:scale(2);opacity:0}}.trae-browser-inspect-ref-box{position:absolute;border:2px solid var(--vscode-icube-colorSuccessHover, "#2FB287");pointer-events:none;z-index:999998;animation:trae-browser-inspect-fadeInOut 2s ease-in-out forwards}.trae-browser-inspect-ref-label{position:absolute;top:-14px;left:0;height:14px;padding:0 4px;box-sizing:border-box;border-radius:2px;background-color:var(--vscode-icube-colorSuccessHover, "#2FB287");color:var(--vscode-icube-colorSnow, "#fff");font-size:9px;font-weight:500;display:flex;align-items:center;white-space:nowrap;z-index:999999}@keyframes trae-browser-inspect-fadeInOut{0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{opacity:0}}.trae-browser-inspect-input-highlight{position:absolute;border:2px solid var(--vscode-icube-colorSuccessHover, "#2FB287");border-radius:4px;pointer-events:none;z-index:999998;box-shadow:0 0 8px var(--vscode-icube-colorSuccessHover, "#2FB287");animation:trae-browser-inspect-input-pulse 600ms ease-out forwards}@keyframes trae-browser-inspect-input-pulse{0%{opacity:0;box-shadow:0 0 0 var(--vscode-icube-colorSuccessHover, "#2FB287")}30%{opacity:1;box-shadow:0 0 12px var(--vscode-icube-colorSuccessHover, "#2FB287")}100%{opacity:0;box-shadow:0 0 0 var(--vscode-icube-colorSuccessHover, "#2FB287")}}.trae-browser-inspect-virtual-cursor{position:fixed;width:20px;height:20px;pointer-events:none;z-index:9999999;opacity:0;transition:opacity .2s ease}.trae-browser-inspect-virtual-cursor.trae-browser-inspect-cursor-visible{opacity:1}.trae-browser-inspect-virtual-cursor.trae-browser-inspect-cursor-idle{animation:trae-browser-inspect-cursor-breathe 2s ease-in-out infinite}.trae-browser-inspect-virtual-cursor svg{width:20px;height:20px;filter:drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3))}@keyframes trae-browser-inspect-cursor-breathe{0%,100%{opacity:.7}50%{opacity:1}}.trae-browser-inspect-scroll-indicator{position:fixed;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:8px;background-color:rgba(0,0,0,.7);color:#fff;font-size:13px;font-weight:500;pointer-events:none;z-index:999999;animation:trae-browser-inspect-indicator-fade 800ms ease-out forwards;backdrop-filter:blur(4px)}.trae-browser-inspect-scroll-indicator svg{width:16px;height:16px;fill:#fff}.trae-browser-inspect-scroll-indicator.trae-scroll-up{top:12px;left:50%;transform:translateX(-50%)}.trae-browser-inspect-scroll-indicator.trae-scroll-down{bottom:12px;left:50%;transform:translateX(-50%)}.trae-browser-inspect-scroll-indicator.trae-scroll-left{left:12px;top:50%;transform:translateY(-50%)}.trae-browser-inspect-scroll-indicator.trae-scroll-right{right:12px;top:50%;transform:translateY(-50%)}@keyframes trae-browser-inspect-indicator-fade{0%{opacity:0;transform:translateX(-50%) scale(0.9)}15%{opacity:1;transform:translateX(-50%) scale(1)}85%{opacity:1}100%{opacity:0}}.trae-browser-inspect-scroll-indicator.trae-scroll-left,.trae-browser-inspect-scroll-indicator.trae-scroll-right{animation-name:trae-browser-inspect-indicator-fade-y}@keyframes trae-browser-inspect-indicator-fade-y{0%{opacity:0;transform:translateY(-50%) scale(0.9)}15%{opacity:1;transform:translateY(-50%) scale(1)}85%{opacity:1}100%{opacity:0}}.trae-browser-inspect-key-badge{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);padding:8px 20px;border-radius:8px;background-color:rgba(0,0,0,.8);color:#fff;font-size:18px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,monospace;pointer-events:none;z-index:999999;animation:trae-browser-inspect-key-pop 500ms ease-out forwards;backdrop-filter:blur(4px);border:1px solid hsla(0,0%,100%,.15);box-shadow:0 4px 12px rgba(0,0,0,.3);letter-spacing:1px}@keyframes trae-browser-inspect-key-pop{0%{opacity:0;transform:translateX(-50%) translateY(10px) scale(0.9)}20%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-10px)}}.trae-browser-inspect-step-badge{position:fixed;top:12px;left:12px;padding:6px 12px;border-radius:6px;background-color:var(--vscode-icube-colorSuccessHover, #2FB287);color:#fff;font-size:12px;font-weight:600;pointer-events:none;z-index:999999;animation:trae-browser-inspect-step-slide 600ms ease-out forwards;box-shadow:0 2px 8px rgba(47,178,135,.3);max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trae-browser-inspect-step-badge.trae-step-old{opacity:.4;transform:translateY(0)}@keyframes trae-browser-inspect-step-slide{0%{opacity:0;transform:translateX(-20px)}20%{opacity:1;transform:translateX(0)}100%{opacity:1;transform:translateX(0)}}.trae-browser-inspect-drag-trail{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999998}.trae-browser-inspect-drag-trail svg{width:100%;height:100%}.trae-browser-inspect-drag-trail .trae-drag-path{fill:none;stroke:var(--vscode-icube-colorSuccessHover, #2FB287);stroke-width:2;stroke-dasharray:8 4;opacity:.6;animation:trae-browser-inspect-dash 600ms linear forwards}.trae-browser-inspect-drag-trail .trae-drag-dot{fill:var(--vscode-icube-colorSuccessHover, #2FB287);filter:drop-shadow(0 0 4px rgba(47, 178, 135, 0.6))}.trae-browser-inspect-drag-trail .trae-drag-endpoint{fill:none;stroke:var(--vscode-icube-colorSuccessHover, #2FB287);stroke-width:2;opacity:.5}@keyframes trae-browser-inspect-dash{0%{stroke-dashoffset:200}100%{stroke-dashoffset:0}}.trae-browser-inspect-drag-trail.trae-drag-fade{animation:trae-browser-inspect-trail-fade 400ms ease-out forwards}@keyframes trae-browser-inspect-trail-fade{0%{opacity:1}100%{opacity:0}}</style><script type="module">(async () => {
   try {
@@ -4621,6 +4635,306 @@ function renderMarkdown(text){
   return html;
 }
 
+/* ============================================================
+   RAG ENGINE — 客户端向量检索（Transformers.js + IndexedDB）
+   在 Web Worker 中加载嵌入模型，避免阻塞 UI。
+   ============================================================ */
+const RAG = {
+  cfgKey: 'nexus-rag-cfg',
+  dbName: 'nexus-rag-db',
+  dbVersion: 1,
+  worker: null,
+  workerReady: false,
+  loading: false,
+  loadProgress: 0,
+  indexBuilt: false,
+  chunkCount: 0,
+  lastBuild: 0,
+  _seq: 0,
+  _pending: new Map(),
+
+  getConfig(){ try { return JSON.parse(localStorage.getItem(this.cfgKey)||'{}'); } catch { return {}; } },
+  setConfig(c){ localStorage.setItem(this.cfgKey, JSON.stringify(c)); },
+  isEnabled(){ return this.getConfig().enabled === true; },
+  setEnabled(v){ const c=this.getConfig(); c.enabled=v; this.setConfig(c); },
+
+  /* ---- Web Worker 初始化（内联 Blob，无需外部文件） ---- */
+  initWorker(){
+    if(this.worker) return;
+    const workerCode=`
+      import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.2.0';
+      env.allowLocalModels=false;
+      let embedder=null;
+      async function getEmbedder(){
+        if(embedder) return embedder;
+        const device = ('gpu' in self.navigator) ? 'webgpu' : 'wasm';
+        try {
+          embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
+            device, dtype: 'q8',
+            progress_callback: (p) => self.postMessage({ type:'progress', payload:p })
+          });
+        } catch(e) {
+          // WebGPU 失败时降级到 WASM
+          embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', {
+            device: 'wasm', dtype: 'q8',
+            progress_callback: (p) => self.postMessage({ type:'progress', payload:p })
+          });
+        }
+        return embedder;
+      }
+      self.onmessage = async (e) => {
+        const msg = e.data;
+        try {
+          if(msg.type === 'embed') {
+            const pipe = await getEmbedder();
+            const out = await pipe(msg.texts, { pooling:'mean', normalize:true });
+            const vectors = out.tolist();
+            self.postMessage({ type:'result', id:msg.id, vectors });
+          } else if(msg.type === 'query') {
+            const pipe = await getEmbedder();
+            const out = await pipe([msg.query], { pooling:'mean', normalize:true });
+            const vector = out.tolist()[0];
+            self.postMessage({ type:'result', id:msg.id, vector });
+          }
+        } catch(err) {
+          self.postMessage({ type:'error', id:msg.id, message: err.message });
+        }
+      };
+    `;
+    const blob=new Blob([workerCode],{ type:'application/javascript' });
+    this.worker=new Worker(URL.createObjectURL(blob),{ type:'module' });
+    this.worker.onmessage=(e)=>{
+      const msg=e.data;
+      if(msg.type==='progress'){
+        const p=msg.payload;
+        if(p.status==='progress' && p.progress){
+          this.loadProgress=Math.round(p.progress);
+          if(this._onProgress) this._onProgress(this.loadProgress, p.file||'');
+        }
+        if(p.status==='ready' || p.status==='done'){
+          this.workerReady=true;
+        }
+        return;
+      }
+      if(msg.type==='result' || msg.type==='error'){
+        const entry=this._pending.get(msg.id);
+        if(entry){
+          this._pending.delete(msg.id);
+          if(msg.type==='error') entry.reject(new Error(msg.message));
+          else entry.resolve(msg);
+        }
+      }
+    };
+    this.worker.onerror=(e)=>{
+      for(const p of this._pending.values()) p.reject(new Error(e.message||'Worker error'));
+      this._pending.clear();
+    };
+  },
+
+  _call(payload){
+    const id=++this._seq;
+    return new Promise((resolve,reject)=>{
+      this._pending.set(id,{ resolve, reject });
+      this.worker.postMessage({ ...payload, id });
+    });
+  },
+
+  /* ---- IndexedDB 向量存储 ---- */
+  _db: null,
+  openDB(){
+    return new Promise((resolve,reject)=>{
+      if(this._db) return resolve(this._db);
+      const req=indexedDB.open(this.dbName, this.dbVersion);
+      req.onupgradeneeded=(e)=>{
+        const db=e.target.result;
+        if(!db.objectStoreNames.contains('vectors')){
+          const store=db.createObjectStore('vectors',{ keyPath:'id' });
+          store.createIndex('moduleKey','moduleKey',{ unique:false });
+          store.createIndex('itemId','itemId',{ unique:false });
+        }
+        if(!db.objectStoreNames.contains('meta')){
+          db.createObjectStore('meta',{ keyPath:'key' });
+        }
+      };
+      req.onsuccess=(e)=>{ this._db=e.target.result; resolve(this._db); };
+      req.onerror=()=>reject(req.error);
+    });
+  },
+  async clearVectors(){
+    const db=await this.openDB();
+    return new Promise((resolve)=>{
+      const tx=db.transaction(['vectors','meta'],'readwrite');
+      tx.objectStore('vectors').clear();
+      tx.objectStore('meta').clear();
+      tx.oncomplete=()=>resolve();
+      tx.onerror=()=>resolve();
+    });
+  },
+  async storeChunk(chunk){
+    const db=await this.openDB();
+    return new Promise((resolve)=>{
+      const tx=db.transaction('vectors','readwrite');
+      tx.objectStore('vectors').put(chunk);
+      tx.oncomplete=()=>resolve();
+      tx.onerror=()=>resolve();
+    });
+  },
+  async getAllChunks(){
+    const db=await this.openDB();
+    return new Promise((resolve)=>{
+      const tx=db.transaction('vectors','readonly');
+      const req=tx.objectStore('vectors').getAll();
+      req.onsuccess=()=>resolve(req.result||[]);
+      req.onerror=()=>resolve([]);
+    });
+  },
+  async setMeta(key,value){
+    const db=await this.openDB();
+    return new Promise((resolve)=>{
+      const tx=db.transaction('meta','readwrite');
+      tx.objectStore('meta').put({ key, value });
+      tx.oncomplete=()=>resolve();
+      tx.onerror=()=>resolve();
+    });
+  },
+  async getMeta(key){
+    const db=await this.openDB();
+    return new Promise((resolve)=>{
+      const tx=db.transaction('meta','readonly');
+      const req=tx.objectStore('meta').get(key);
+      req.onsuccess=()=>resolve(req.result?.value ?? null);
+      req.onerror=()=>resolve(null);
+    });
+  },
+
+  /* ---- 文档分块：将工作台数据按条目拆分为可检索文本块 ---- */
+  chunkData(){
+    const chunks=[];
+    const t=today();
+    CONFIG.modules.forEach(m=>{
+      const items=data[m.key]||[];
+      items.forEach(item=>{
+        let text=`【${m.name}】`;
+        if(m.type==="todo"){
+          text+=` ${item.title}（${item.done?'已完成':'未完成'}, ${item.priority||'常规'}）${item.note?'。备注: '+item.note:''}`;
+        } else if(m.type==="checkin"){
+          const streak=item.log?Object.keys(item.log).length:0;
+          const done=item.log&&item.log[t];
+          text+=` ${item.title}（${done?'今日已打卡':'今日未打卡'}, 累计${streak}天）`;
+        } else if(m.type==="progress"){
+          const pct=item.target?Math.round(item.current/item.target*100):0;
+          text+=` ${item.title}: ${item.current}/${item.target} ${item.unit||m.unit||''}（${pct}%）${item.note?'。'+item.note:''}`;
+        } else if(m.type==="finance"){
+          text+=` ${item.type==='income'?'收入':'支出'}: ${item.title} ¥${item.amount}（${item.category}）${item.date?'。'+item.date:''}`;
+        } else if(m.type==="schedule"){
+          text+=` ${item.title}（${item.priority||'常规'}, ${item.status||'未开始'}, ${item.startDate||'?'}→${item.endDate||'?'}）${item.note?'。'+item.note:''}`;
+        } else if(m.type==="note"){
+          text+=` ${item.title}（${item.mood||'一般'}）${item.content?'。'+item.content:''}`;
+        } else {
+          text+=` ${item.title||'未命名'}${item.content?'。'+item.content:''}`;
+        }
+        chunks.push({
+          id: `${m.key}_${item.id}`,
+          moduleKey: m.key,
+          moduleName: m.name,
+          itemId: item.id,
+          text: text.slice(0, 500)
+        });
+      });
+    });
+    return chunks;
+  },
+
+  /* ---- 构建向量索引 ---- */
+  async buildIndex(onProgress){
+    this.initWorker();
+    this.loading=true;
+    this._onProgress=onProgress;
+
+    try {
+      // 1. 分块
+      const chunks=this.chunkData();
+      if(!chunks.length){ this.loading=false; return { ok:false, msg:'没有可索引的数据' }; }
+      this.chunkCount=chunks.length;
+
+      // 2. 清空旧索引
+      await this.clearVectors();
+
+      // 3. 批量嵌入（每批最多 16 条）
+      const batchSize=16;
+      for(let i=0;i<chunks.length;i+=batchSize){
+        const batch=chunks.slice(i, i+batchSize);
+        const texts=batch.map(c=>c.text);
+        const { vectors }=await this._call({ type:'embed', texts });
+        for(let j=0;j<batch.length;j++){
+          await this.storeChunk({
+            ...batch[j],
+            vector: Float32Array.from(vectors[j])
+          });
+        }
+        if(onProgress) onProgress(Math.round((i+batch.length)/chunks.length*100), `嵌入 ${i+batch.length}/${chunks.length}`);
+      }
+
+      // 4. 保存元数据
+      this.lastBuild=Date.now();
+      await this.setMeta('lastBuild', this.lastBuild);
+      await this.setMeta('chunkCount', chunks.length);
+      this.indexBuilt=true;
+      this.loading=false;
+      return { ok:true, count:chunks.length };
+    } catch(e) {
+      this.loading=false;
+      return { ok:false, msg:e.message };
+    }
+  },
+
+  /* ---- 检索：查询嵌入 + 余弦相似度 + Top-K ---- */
+  async search(query, topK=5){
+    if(!this.indexBuilt){
+      const built=await this.getMeta('lastBuild');
+      if(!built) return [];
+      this.indexBuilt=true; this.lastBuild=built;
+      this.chunkCount=await this.getMeta('chunkCount') || 0;
+    }
+    this.initWorker();
+    const chunks=await this.getAllChunks();
+    if(!chunks.length) return [];
+
+    // 嵌入查询
+    const { vector: qv }=await this._call({ type:'query', query });
+    const qvec=Float32Array.from(qv);
+
+    // 余弦相似度（已归一化 → 点积）
+    const scored=chunks.map(c=>{
+      const v=c.vector;
+      let dot=0;
+      const len=Math.min(qvec.length, v.length);
+      for(let i=0;i<len;i++) dot+=qvec[i]*v[i];
+      return { ...c, score: dot };
+    });
+    scored.sort((a,b)=>b.score-a.score);
+    return scored.slice(0, topK).map(s=>({
+      moduleKey: s.moduleKey,
+      moduleName: s.moduleName,
+      text: s.text,
+      score: s.score
+    }));
+  },
+
+  /* ---- 状态查询 ---- */
+  async getStatus(){
+    const lastBuild=await this.getMeta('lastBuild');
+    const chunkCount=await this.getMeta('chunkCount');
+    return {
+      built: !!lastBuild,
+      lastBuild,
+      chunkCount: chunkCount || 0,
+      workerReady: this.workerReady,
+      loading: this.loading
+    };
+  }
+};
+
 /* ---------- ring svg ---------- */
 function ringSVG(pct, color){
   const r=25, c=2*Math.PI*r, off=c*(1-Math.min(100,pct)/100);
@@ -4965,6 +5279,7 @@ function renderAI(){
     </div>`;
 
   $("#screen").innerHTML=`<div class="header"><div><h2>AI 助手</h2><p>模型: ${esc(cfg.model||'?')} · 仅使用本地数据</p></div><div class="spacer"></div>
+    <div class="rag-badge ${RAG.isEnabled()?'on':'off'}" id="ai-rag-toggle" title="向量检索模式">${icon("grid",13)} RAG</div>
     <button class="btn ghost" id="ai-settings">${icon("settings",16)}</button>
     <button class="btn ghost" id="ai-clear" title="清空对话">${icon("erase",16)}</button></div>
     <div class="ai-chat">
@@ -4984,6 +5299,23 @@ function renderAI(){
   $("#ai-clear").onclick=()=>{
     if(!confirm("确定清空所有对话记录？")) return;
     AI.clearChat(); aiChat.msgs=[]; renderAI();
+  };
+
+  // RAG 开关
+  $("#ai-rag-toggle").onclick=async()=>{
+    const enabled=RAG.isEnabled();
+    if(!enabled){
+      // 开启前检查索引状态
+      const status=await RAG.getStatus();
+      if(!status.built){
+        toast('请先在设置中构建向量索引','err');
+        openAISettings();
+        return;
+      }
+    }
+    RAG.setEnabled(!enabled);
+    renderAI();
+    toast(enabled?'RAG 已关闭':'RAG 已开启（向量检索模式）','ok');
   };
 
   // 建议问题
@@ -5042,6 +5374,27 @@ function openAISettings(){
           ${icon("shield",12)} 隐私保护：仅发送工作台本地数据（任务、计划、复盘等）。<strong style="color:var(--accent)">私有仓库中的文件内容不会被发送给第三方。</strong>仓库文件问答请使用 Trae 定时任务。
         </p>
       </div>
+      <div style="border-top:1px solid var(--border);margin-top:4px;padding-top:14px">
+        <div class="field">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+            <input type="checkbox" id="rag-enabled" ${RAG.isEnabled()?'checked':''} style="width:16px;height:16px"/>
+            <span>${icon("grid",14)} 启用向量检索（RAG）</span>
+          </label>
+          <p class="sub" style="margin:6px 0 0;font-size:12px;color:var(--text-tertiary);line-height:1.5">
+            使用 Transformers.js 在浏览器本地运行嵌入模型（all-MiniLM-L6-v2, ~23MB），对工作台数据构建向量索引。问答时自动检索最相关片段注入上下文，提升精准度。首次使用需下载模型。
+          </p>
+        </div>
+        <div class="rag-panel" id="rag-panel">
+          <div class="rag-stat"><span class="k">索引状态</span><span class="v" id="rag-status">查询中…</span></div>
+          <div class="rag-stat"><span class="k">已索引片段</span><span class="v" id="rag-chunks">-</span></div>
+          <div class="rag-stat"><span class="k">上次构建</span><span class="v" id="rag-built">-</span></div>
+          <div id="rag-progress-wrap" style="display:none">
+            <div class="rag-progress"><i id="rag-progress-bar" style="width:0%"></i></div>
+            <p class="sub" id="rag-progress-text" style="font-size:11px;color:var(--text-tertiary);margin:4px 0 0">准备中…</p>
+          </div>
+          <button class="btn" id="rag-build" style="width:100%;margin-top:10px">${icon("grid",15)} 构建向量索引</button>
+        </div>
+      </div>
     </div>
     <div class="modal-actions"><div class="spacer"></div>
       <button class="btn ghost" id="ai-cancel">取消</button>
@@ -5084,9 +5437,58 @@ function openAISettings(){
       consent: ov.querySelector("#ai-consent").checked,
     };
     AI.setConfig(newCfg);
+    RAG.setEnabled(ov.querySelector("#rag-enabled").checked);
     close();
     if(view==="ai") renderAI();
     toast("AI 设置已保存","ok");
+  };
+
+  // RAG 索引状态加载
+  (async()=>{
+    const status=await RAG.getStatus();
+    const stEl=ov.querySelector("#rag-status");
+    const chEl=ov.querySelector("#rag-chunks");
+    const bdEl=ov.querySelector("#rag-built");
+    if(status.built){
+      stEl.textContent="已构建"; stEl.style.color="var(--module-1)";
+      chEl.textContent=`${status.chunkCount} 个片段`;
+      bdEl.textContent=status.lastBuild?new Date(status.lastBuild).toLocaleString('zh-CN'):'-';
+    } else {
+      stEl.textContent="未构建"; stEl.style.color="var(--text-tertiary)";
+      chEl.textContent="0"; bdEl.textContent="-";
+    }
+  })();
+
+  // RAG 构建索引
+  ov.querySelector("#rag-build").onclick=async()=>{
+    const btn=ov.querySelector("#rag-build");
+    const progWrap=ov.querySelector("#rag-progress-wrap");
+    const progBar=ov.querySelector("#rag-progress-bar");
+    const progText=ov.querySelector("#rag-progress-text");
+    const stEl=ov.querySelector("#rag-status");
+
+    btn.disabled=true; btn.textContent="构建中…";
+    progWrap.style.display="block";
+    stEl.textContent="加载模型中…"; stEl.style.color="var(--accent)";
+
+    const result=await RAG.buildIndex((pct, file)=>{
+      progBar.style.width=pct+"%";
+      progText.textContent=file?`${file} · ${pct}%`:`${pct}%`;
+      stEl.textContent=file.includes('嵌入')?'嵌入中…':'加载模型中…';
+    });
+
+    progWrap.style.display="none";
+    btn.disabled=false; btn.textContent=icon("grid",15)+" 构建向量索引";
+
+    if(result.ok){
+      stEl.textContent="已构建"; stEl.style.color="var(--module-1)";
+      ov.querySelector("#rag-chunks").textContent=`${result.count} 个片段`;
+      ov.querySelector("#rag-built").textContent=new Date().toLocaleString('zh-CN');
+      toast(`向量索引构建完成：${result.count} 个片段`,"ok");
+    } else {
+      stEl.textContent="构建失败"; stEl.style.color="var(--danger)";
+      toast('索引构建失败: '+(result.msg||''),'err');
+    }
   };
 }
 
@@ -5115,9 +5517,28 @@ async function sendAIMessage(){
     </div>`);
   msgsEl.scrollTop=msgsEl.scrollHeight;
 
+  // RAG 检索中提示
+  if(RAG.isEnabled()){
+    const s=$("#ai-streaming .ai-bubble");
+    s.innerHTML=`<p style="color:var(--text-tertiary);font-size:12px">${icon("grid",12)} 向量检索中…</p><div class="ai-typing"><span></span><span></span><span></span></div>`;
+  }
+
   // 构建消息
   const ctx=AI.buildContext();
-  const sysPrompt=`你是 NEXUS 工作台的 AI 助手。用户的工作台数据如下，请基于这些数据回答问题。\n\n${ctx}\n\n要求：\n1. 回答简洁明了，使用 Markdown 格式\n2. 引用具体数据时请准确\n3. 如果数据中没有相关信息，请明确说明\n4. 可以提供分析和建议`;
+  let sysPrompt=`你是 NEXUS 工作台的 AI 助手。用户的工作台数据如下，请基于这些数据回答问题。\n\n${ctx}\n\n要求：\n1. 回答简洁明了，使用 Markdown 格式\n2. 引用具体数据时请准确\n3. 如果数据中没有相关信息，请明确说明\n4. 可以提供分析和建议`;
+  let ragRefs=[];
+
+  // RAG 模式：向量检索相关片段
+  if(RAG.isEnabled()){
+    try {
+      ragRefs=await RAG.search(q, 5);
+      if(ragRefs.length){
+        const refText=ragRefs.map((r,i)=>`[${i+1}] ${r.text}（相似度: ${(r.score*100).toFixed(0)}%）`).join('\n');
+        sysPrompt+=`\n\n## 向量检索结果（与用户问题最相关）\n${refText}\n\n请在回答中优先参考以上检索结果，并在引用时标注序号 [1] [2] 等。`;
+      }
+    } catch(e){ console.warn('RAG search failed:', e); }
+  }
+
   const messages=[
     { role:"system", content:sysPrompt },
     ...aiChat.msgs.slice(-10).map(m=>({ role:m.role, content:m.content })),
@@ -5142,7 +5563,13 @@ async function sendAIMessage(){
       AI.saveChat(aiChat.msgs);
       aiChat.streaming=false;
       if(sendBtn){ sendBtn.disabled=false; sendBtn.innerHTML=icon("send",20); sendBtn.onclick=()=>sendAIMessage(); }
-      const s=$("#ai-streaming"); if(s) s.removeAttribute("id");
+      const s=$("#ai-streaming"); 
+      // 添加 RAG 引用
+      if(ragRefs.length && s){
+        const refHTML=ragRefs.map((r,i)=>`<div class="rag-ref-item">[${i+1}] ${esc(r.moduleName)} · 相似度 ${(r.score*100).toFixed(0)}%</div>`).join("");
+        s.querySelector(".ai-bubble").insertAdjacentHTML("beforeend",`<div class="rag-refs"><div class="rag-ref-title">${icon("grid",12)} 向量检索引用</div>${refHTML}</div>`);
+      }
+      if(s) s.removeAttribute("id");
     },
     (err)=>{
       streamEl.innerHTML=`<p style="color:var(--danger)">${icon("alert",14)} ${esc(err)}</p>`;
