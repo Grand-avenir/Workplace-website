@@ -174,7 +174,7 @@
   .quote .txt { font-size:20px; font-weight:700; color:var(--text); letter-spacing:-.01em; line-height:1.5; }
 
   /* overview rings */
-  .rings { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:0; }
+  .rings { display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap:0; }
   .ring { display:flex; flex-direction:column; align-items:center; gap:8px; padding:12px 4px; cursor:pointer; min-width:0;
     border-radius: var(--radius-card); transition: background .15s; }
   .ring:hover { background: var(--surface-nested); }
@@ -186,7 +186,7 @@
   .ring .sub { font-size:12px; color:var(--text-secondary); }
 
   /* quick add */
-  .quick-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; }
+  .quick-grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:10px; }
   .qbtn { display:flex; align-items:center; gap:12px; padding:14px 15px; border:none; cursor:pointer; border-radius:var(--radius-tile);
     background:var(--surface-card); color:var(--text); border:1px solid var(--border); box-shadow: var(--shadow-card); text-align:left; transition: all .15s; min-width:0; }
   .qbtn:hover { border-color:var(--border-input); transform: translateY(-1px); box-shadow: var(--shadow-overlay); }
@@ -246,6 +246,20 @@
   .search-box { position:relative; width: 240px; }
   .search-box svg { position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--text-tertiary); pointer-events:none; }
   .search-box input { padding-left:34px; }
+
+  /* ---- 筛选栏 ---- */
+  .filter-bar { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin:0 0 14px; padding:12px 16px;
+    background:var(--surface-card); border:1px solid var(--border); border-radius:var(--radius-card); box-shadow:var(--shadow-card); }
+  .filter-group { display:flex; align-items:center; gap:8px; }
+  .filter-label { font-size:12px; font-weight:700; color:var(--text-secondary); display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
+  .filter-date { width:auto; min-width:130px; padding:7px 10px; font-size:13px; }
+  .filter-sep { color:var(--text-tertiary); font-size:13px; }
+  .filter-select { width:auto; min-width:130px; padding:7px 28px 7px 10px; font-size:13px; border-radius:8px;
+    border:1px solid var(--border-input); background:var(--surface-card); color:var(--text); cursor:pointer; }
+  .filter-select:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-muted); }
+  .filter-clear { background:var(--danger-muted); color:var(--danger); border:none; border-radius:8px; padding:7px 12px;
+    font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:4px; transition:background .15s; }
+  .filter-clear:hover { background:var(--danger); color:#fff; }
 
   /* module hero header (per-type summary) */
   .hero { display:flex; align-items:center; gap: 13px; padding: 12px 16px; border-radius: var(--radius-tile);
@@ -661,7 +675,7 @@
     .g-4, .g-3, .g-2, .g-main { grid-template-columns: 1fr; }
     .modcard-grid { grid-template-columns: 1fr; }
     .pin-list { grid-template-columns: 1fr !important; }
-    .rings { grid-template-columns: repeat(2, 1fr); }
+    .rings { grid-template-columns: repeat(3, 1fr); }
     .quick-grid { grid-template-columns: 1fr 1fr; }
     .pomo .pstats { grid-template-columns: repeat(3, 1fr); }
     .mod-summary { grid-template-columns: repeat(2, 1fr); }
@@ -726,7 +740,7 @@
   @media (min-width: 1920px) {
     .main > #screen { max-width: 1720px; }
     .modcard-grid { grid-template-columns: repeat(5, 1fr); }
-    .quick-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .quick-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
     .pin-list { grid-template-columns: repeat(4, 1fr); }
     .hero-banner .hi { font-size: 38px; }
     .hero-banner { min-height: 240px; }
@@ -3931,7 +3945,7 @@
   <!-- sidebar -->
   <aside class="sidebar">
     <div class="brand">
-      <div class="ava" id="ava" title="点击更换头像"><img src="assets/avatar.jpg" alt="头像" id="avaImg"><span class="cam" id="avaCam"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5h3l1.5-2h7L17 8.5h3v10H4z"></path><circle cx="12" cy="13" r="3.2"></circle></svg></span></div>
+      <div class="ava" id="ava" title="点击更换头像"><img src="assets/default-avatar.jpg" alt="头像" id="avaImg"><span class="cam" id="avaCam"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5h3l1.5-2h7L17 8.5h3v10H4z"></path><circle cx="12" cy="13" r="3.2"></circle></svg></span></div>
       <input type="file" id="avatarInput" accept="image/*" hidden="">
       <div><h1 id="brandName">辞忧</h1><p id="brandSlogan">丢掉幻想，准备战斗！</p></div>
     </div>
@@ -3941,6 +3955,7 @@
         <span class="sync-dot error" id="syncDot"></span>
         <span class="sync-txt" id="syncTxt">9 分钟前同步</span>
         <button class="sync-btn" id="syncBtn" title="同步设置"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"></path><path d="M21 3v6h-6"></path></svg></button>
+        <button class="sync-btn" id="settingsBtn" title="设置"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"></path></svg></button>
       </div>
     </div>
   </aside>
@@ -4105,6 +4120,8 @@ const CONFIG = {
       calc: d => { const it=d.checkin||[]; const t=today(); const done=it.filter(x=>x.log&&x.log[t]).length; return { value: it.length?Math.round(done/it.length*100):0, sub:`${done}/${it.length} 项` }; } },
     { key:"read", label:"知识库", icon:"book", color:"var(--module-2)", calc: d => avgProgress(d.read) },
     { key:"sport", label:"体能训练", icon:"activity", color:"var(--module-3)", calc: d => avgProgress(d.sport) },
+    { key:"future", label:"未来计划", icon:"rocket", color:"var(--module-5)",
+      calc: d => { const it=d.future||[]; const done=it.filter(x=>x.status==="已完成").length; return { value: it.length?Math.round(done/it.length*100):0, sub:`${done}/${it.length} 项` }; } },
   ],
 
   // 本周状态趋势（真实数据：读取用户填写的 __trend，7 个数字；没有就留空）
@@ -4115,21 +4132,22 @@ const CONFIG = {
 
   // 快速记录按钮（点了直接给对应模块新建）
   quickAdd: [
-    { label:"记训练", icon:"activity", module:"sport",   tint:"#1a1208", color:"var(--module-3)" },
+    { label:"记待办", icon:"list",     module:"todo",    tint:"#0a2a3a", color:"var(--accent)" },
     { label:"记打卡", icon:"check",    module:"checkin", tint:"#0a2a1a", color:"var(--module-1)" },
+    { label:"记训练", icon:"activity", module:"sport",   tint:"#1a1208", color:"var(--module-3)" },
     { label:"记收支", icon:"wallet",   module:"money",   tint:"#2a0a18", color:"var(--module-4)" },
     { label:"记灵感", icon:"pen",      module:"note",    tint:"#1a0a2a", color:"var(--module-5)" },
     { label:"记计划", icon:"rocket",   module:"future",  tint:"#1a0a2a", color:"var(--module-5)" },
-    { label:"写复盘", icon:"clipboard",module:"review",  tint:"#0a2a3a", color:"var(--accent)" },
   ],
 
   // ============ 模块定义 ============
   modules: [
     { key:"todo", name:"今日任务", icon:"list", tint:"#0a2a3a", color:"var(--accent)", type:"todo", desc:"任务队列与执行追踪",
       priorities:[ {key:"P0",label:"紧急",color:"#2a1218",text:"#ff4060"}, {key:"P1",label:"常规",color:"#1a1208",text:"#ff9d00"}, {key:"P2",label:"低优",color:"#0a2a1a",text:"#00ff9d"} ],
-      seed:[ {id:11,title:"完成核心模块开发 30min",priority:"P0",done:false,note:"优化系统性能，稳步推进项目进度"},
-             {id:12,title:"提交 1 份技术文档 / 报告",priority:"P1",done:false,note:""},
-             {id:13,title:"整理今日工作日志",priority:"P2",done:true,note:""} ] },
+      categories:["生产运行","设备运维","成本管控","物资管理","团队建设","安全环保","跨部门协作","个人成长","其他"],
+      seed:[ {id:11,title:"完成核心模块开发 30min",priority:"P0",category:"生产运行",done:false,note:"优化系统性能，稳步推进项目进度"},
+             {id:12,title:"提交 1 份技术文档 / 报告",priority:"P1",category:"跨部门协作",done:false,note:""},
+             {id:13,title:"整理今日工作日志",priority:"P2",category:"个人成长",done:true,note:""} ] },
     { key:"checkin", name:"日常协议", icon:"leaf", tint:"#0a2a1a", color:"var(--module-1)", type:"checkin", desc:"补水·睡眠·补给等每日打卡",
       seed:[ {id:21,title:"喝够 8 杯水",log:{}}, {id:22,title:"23:30 前进入休眠",log:{}}, {id:23,title:"维生素 / 营养补给",log:{}} ] },
     { key:"read", name:"知识库", icon:"book", tint:"#0a1a2a", color:"var(--module-2)", type:"progress", unit:"页", desc:"技术书籍·论文·学习记录",
@@ -4202,6 +4220,10 @@ const ICONS = {
   erase:'<path d="M3 12l6-6 9 9-6 6H9z"/><path d="M9 18l-6-6"/><path d="M14 7l5 5"/>',
   shield:'<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>',
   alert:'<circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><circle cx="12" cy="16" r=".5" fill="currentColor"/>',
+  filter:'<path d="M3 5h18l-7 8v6l-4 2v-8z"/>',
+  x:'<path d="M6 6l12 12M18 6 6 18"/>',
+  palette:'<circle cx="12" cy="12" r="9"/><circle cx="8" cy="9" r="1.2" fill="currentColor"/><circle cx="12" cy="7" r="1.2" fill="currentColor"/><circle cx="16" cy="9" r="1.2" fill="currentColor"/><circle cx="14" cy="14" r="1.2" fill="currentColor"/><path d="M12 21a3 3 0 0 1 0-6 2 2 0 0 0 0-4"/>',
+  image:'<rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M4 17l5-5 4 4 3-3 4 4"/>',
 };
 function icon(name, size=22, sw=1.7){
   const path = ICONS[name] || ICONS.grid;
@@ -4727,6 +4749,7 @@ async function uploadDefaultConfig(){
 }
 
 let searchQ = "";
+let filterState = { dateFrom:"", dateTo:"", category:"" };  // 模块筛选状态
 let pomo = { running:false, remain:25*60, total:25*60 };   // 番茄钟状态（内存态，跨渲染保留）
 let clockTimer = null;                                       // 全局秒级心跳（时钟 + 番茄钟）
 function persist(){ store.save(); render(); }
@@ -5826,6 +5849,8 @@ function renderModule(key){
   const t=today();
   const q=searchQ.trim().toLowerCase();
   if(q) it=all.filter(x=>(x.title||"").toLowerCase().includes(q)||(x.note||x.content||"").toLowerCase().includes(q));
+  // 应用筛选
+  it=applyFilters(it,m);
 
   let head="";
   if(m.type==="finance"){
@@ -5855,12 +5880,15 @@ function renderModule(key){
   }
 
   const body = it.length ? it.map(x=>recHTML(m,x)).join("")
-    : `<div class="empty"><span class="e">${icon(m.icon,28)}</span><div>${q?'没有匹配的记录':'还没有记录，点右上角「新建」添加第一条吧'}</div></div>`;
+    : `<div class="empty"><span class="e">${icon(m.icon,28)}</span><div>${q||filterState.dateFrom||filterState.dateTo||filterState.category?'没有匹配的记录':'还没有记录，点右上角「新建」添加第一条吧'}</div></div>`;
 
+  // 构建筛选栏
+  const filterBar = buildFilterBar(m);
   $("#screen").innerHTML=`<div class="header"><div><h2>${m.name}</h2><p>${m.desc}</p></div><div class="spacer"></div><span class="date-chip">${icon("calendar",14)} ${dateStr()}</span></div>
     <div class="toolbar">
       <div class="search-box">${icon("search",15,2.2)}<input id="search" placeholder="搜索…" value="${attr(searchQ)}"/></div>
       <div class="spacer"></div><button class="btn" id="btn-new">${icon("plus",16,2.2)}新建</button></div>
+    ${filterBar}
     ${head}
     <div class="mod-layout">
       <div class="mod-main">
@@ -5876,16 +5904,85 @@ function renderModule(key){
   s.addEventListener("compositionend",()=>{ composing=false; refresh(); });
   s.addEventListener("input",()=>{ if(!composing) refresh(); });
   $("#btn-new").onclick=()=>openEditor(key,null);
+  wireFilters(key,m);
   wireModule(key);
+}
+
+/* ---- 筛选系统 ---- */
+function applyFilters(items, m){
+  let r=items;
+  // 日期筛选
+  if(filterState.dateFrom || filterState.dateTo){
+    r=r.filter(x=>{
+      const d = x.date || x.startDate || "";
+      if(!d) return false;
+      if(filterState.dateFrom && d < filterState.dateFrom) return false;
+      if(filterState.dateTo && d > filterState.dateTo) return false;
+      return true;
+    });
+  }
+  // 分类筛选
+  if(filterState.category){
+    if(m.type==="finance") r=r.filter(x=>x.category===filterState.category);
+    else if(m.type==="todo") r=r.filter(x=>x.category===filterState.category);
+    else r=r.filter(x=>(x.mood||x.category||x.status)===filterState.category);
+  }
+  return r;
+}
+
+function buildFilterBar(m){
+  // 判断是否显示日期筛选：finance/note/todo/schedule 有日期字段
+  const hasDate = ["finance","note","todo","schedule"].includes(m.type);
+  // 分类选项
+  let catOpts=[];
+  if(m.type==="finance") catOpts=m.categories||[];
+  else if(m.type==="todo") catOpts=m.categories||[];
+  else if(m.type==="schedule") catOpts=m.statuses||["未开始","进行中","已完成"];
+  else if(m.type==="note") catOpts=m.moods||[];
+
+  const dateHTML = hasDate ? `
+    <div class="filter-group">
+      <span class="filter-label">${icon("calendar",12,2)} 日期</span>
+      <input type="date" id="f-date-from" class="filter-date" value="${filterState.dateFrom}" placeholder="起"/>
+      <span class="filter-sep">~</span>
+      <input type="date" id="f-date-to" class="filter-date" value="${filterState.dateTo}" placeholder="止"/>
+    </div>` : "";
+
+  const catHTML = catOpts.length ? `
+    <div class="filter-group">
+      <span class="filter-label">${icon("filter",12,2)} 筛选</span>
+      <select id="f-cat-sel" class="filter-select">
+        <option value="">全部分类</option>
+        ${catOpts.map(c=>`<option value="${attr(c)}" ${c===filterState.category?'selected':''}>${esc(c)}</option>`).join("")}
+      </select>
+    </div>` : "";
+
+  const hasFilter = hasDate || catOpts.length;
+  if(!hasFilter) return "";
+
+  return `<div class="filter-bar">
+    ${dateHTML}
+    ${catHTML}
+    ${(filterState.dateFrom||filterState.dateTo||filterState.category) ? `<button class="filter-clear" id="f-clear">${icon("x",12,2)} 清除筛选</button>` : ''}
+  </div>`;
+}
+
+function wireFilters(key, m){
+  const df=$("#f-date-from"), dt=$("#f-date-to"), cs=$("#f-cat-sel"), cl=$("#f-clear");
+  if(df) df.onchange=()=>{ filterState.dateFrom=df.value; renderModuleResults(key); };
+  if(dt) dt.onchange=()=>{ filterState.dateTo=dt.value; renderModuleResults(key); };
+  if(cs) cs.onchange=()=>{ filterState.category=cs.value; renderModuleResults(key); };
+  if(cl) cl.onclick=()=>{ filterState={dateFrom:"",dateTo:"",category:""}; renderModule(key); };
 }
 
 /* 仅刷新受搜索影响的记录列表与计数，不重建搜索框（避免打断中文输入法） */
 function renderModuleResults(key){
   const m=modOf(key); const all=data[key]||[];
   const q=searchQ.trim().toLowerCase();
-  const it=q?all.filter(x=>(x.title||"").toLowerCase().includes(q)||(x.note||x.content||"").toLowerCase().includes(q)):all;
+  let it=q?all.filter(x=>(x.title||"").toLowerCase().includes(q)||(x.note||x.content||"").toLowerCase().includes(q)):all;
+  it=applyFilters(it,m);
   const body = it.length ? it.map(x=>recHTML(m,x)).join("")
-    : `<div class="empty"><span class="e">${icon(m.icon,28)}</span><div>${q?'没有匹配的记录':'还没有记录，点右上角「新建」添加第一条吧'}</div></div>`;
+    : `<div class="empty"><span class="e">${icon(m.icon,28)}</span><div>${q||filterState.dateFrom||filterState.dateTo||filterState.category?'没有匹配的记录':'还没有记录，点右上角「新建」添加第一条吧'}</div></div>`;
   const grid=$(".rec-grid"); if(grid) grid.innerHTML=body;
   const cnt=$("#rec-count"); if(cnt) cnt.textContent=`${it.length} 条`;
   wireModule(key);
@@ -6095,6 +6192,8 @@ function openEditor(key,item){
   if(m.type==="todo"){
     fields=`<div class="field"><label>任务</label><input id="f-title" value="${attr(d.title)}" placeholder="要做什么？"/></div>
       <div class="field"><label>优先级</label><div class="seg" id="f-prio">${(m.priorities||[]).map(p=>`<div class="opt ${p.key===d.priority?'on':''}" data-v="${p.key}">${p.label}</div>`).join("")}</div></div>
+      <div class="field"><label>分类</label><div class="seg" id="f-cat">${(m.categories||[]).map(c=>`<div class="opt ${c===d.category?'on':''}" data-v="${attr(c)}" style="flex:0 0 auto;min-width:auto">${esc(c)}</div>`).join("")}</div></div>
+      <div class="field"><label>日期</label><input id="f-date" type="date" value="${d.date||isoToday()}"/></div>
       <div class="field"><label>备注</label><textarea id="f-note" placeholder="补充说明">${esc(d.note||'')}</textarea></div>`;
   } else if(m.type==="checkin"){
     fields=`<div class="field"><label>打卡项</label><input id="f-title" value="${attr(d.title)}" placeholder="例如：喝够 8 杯水"/></div>
@@ -6184,7 +6283,7 @@ function openEditor(key,item){
     const seg=id=>{ const el=overlay.querySelector(id+" .on"); return el?el.dataset.v:undefined; };
     d.title=(val("#f-title")||"").trim()||"未命名";
     d.layout=seg("#f-layout")||'default';
-    if(m.type==="todo"){ d.priority=seg("#f-prio")||d.priority; d.note=(val("#f-note")||"").trim(); }
+    if(m.type==="todo"){ d.priority=seg("#f-prio")||d.priority; d.category=seg("#f-cat")||(m.categories&&m.categories[0])||"其他"; d.date=val("#f-date")||isoToday(); d.note=(val("#f-note")||"").trim(); }
     else if(m.type==="progress"){ d.current=Math.max(0,+val("#f-cur")||0); d.target=Math.max(1,+val("#f-tgt")||1); d.unit=(val("#f-unit")||"").trim(); d.note=(val("#f-note")||"").trim(); }
     else if(m.type==="finance"){ d.type=seg("#f-ftype")||"expense"; d.amount=Math.max(0,+val("#f-amt")||0); d.category=seg("#f-cat")||(m.categories&&m.categories[0])||"其他"; d.date=val("#f-date"); }
     else if(m.type==="schedule"){ d.priority=seg("#f-prio")||d.priority; d.status=seg("#f-status")||d.status||"未开始"; d.startDate=val("#f-start")||isoToday(); d.endDate=val("#f-end")||isoToday(); d.note=(val("#f-note")||"").trim(); }
@@ -6232,7 +6331,7 @@ function openEditor(key,item){
 }
 
 function newItem(m){ const base={id:Date.now()}; let item;
-  if(m.type==="todo") item={...base,title:"",priority:(m.priorities&&m.priorities[1]?m.priorities[1].key:"P1"),done:false,note:""};
+  if(m.type==="todo") item={...base,title:"",priority:(m.priorities&&m.priorities[1]?m.priorities[1].key:"P1"),category:(m.categories&&m.categories[0])||"其他",date:isoToday(),done:false,note:""};
   else if(m.type==="checkin") item={...base,title:"",log:{}};
   else if(m.type==="progress") item={...base,title:"",current:0,target:(m.unit==="页"?100:20),unit:m.unit||"",note:""};
   else if(m.type==="finance") item={...base,title:"",type:"expense",amount:"",category:(m.categories&&m.categories[0])||"其他",date:isoToday()};
@@ -6257,7 +6356,7 @@ function confirmDelete(key,id){ const item=(data[key]||[]).find(i=>i.id==id); if
 
 /* ---------- router / sidebar ---------- */
 function dateStr(){ const n=new Date(); const wd="日一二三四五六"[n.getDay()]; return `${n.getFullYear()}年${n.getMonth()+1}月${n.getDate()}日 周${wd}`; }
-function go(v){ view=v; searchQ=""; renderNavActive(); render(); window.scrollTo({top:0}); closeSidebar(); }
+function go(v){ view=v; searchQ=""; filterState={dateFrom:"",dateTo:"",category:""}; renderNavActive(); render(); window.scrollTo({top:0}); closeSidebar(); }
 function render(){ if(view==="home") renderHome(); else if(view==="insight") renderInsight(); else if(view==="ai") renderAI(); else renderModule(view); }
 
 function buildNav(){
@@ -6314,7 +6413,108 @@ $("#avatarInput").onchange = e => {
   e.target.value = "";
 };
 
-/* ---------- utils ---------- */
+/* ============================================================
+   SETTINGS PANEL — 主题 / 背景 / 头像 / 名称设置
+   ============================================================ */
+const SETTINGS_KEY = "nexus-settings";
+function loadSettings(){ try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)||"{}"); } catch { return {}; } }
+function saveSettings(s){ try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch(e){ console.warn("settings save failed",e); } }
+
+const THEMES = [
+  { key:"light",    name:"赛博暗色",   desc:"深空蓝 + 霓虹青" },
+  { key:"dark",     name:"墨黑",       desc:"纯黑 + 暖金" },
+  { key:"dark-blue",name:"深海蓝",     desc:"深蓝 + 冰蓝" },
+];
+
+const BG_PRESETS = [
+  { key:"default", name:"默认网格",   val:"var(--page-texture)" },
+  { key:"none",    name:"纯色背景",   val:"none" },
+];
+
+function applySettings(){
+  const s = loadSettings();
+  // 主题
+  if(s.theme) document.documentElement.setAttribute("data-theme", s.theme);
+  // 名称
+  if(s.name){ CONFIG.owner = s.name; const el=$("#brandName"); if(el) el.textContent=s.name; }
+  // 签名
+  if(s.slogan){ CONFIG.slogan = s.slogan; const el=$("#brandSlogan"); if(el) el.textContent=s.slogan; }
+  // 背景
+  if(s.bgKey==="none"){ document.body.style.setProperty("--page-texture","none"); }
+  else if(s.bgUrl){ document.body.style.setProperty("--page-texture",`url(${s.bgUrl})`); }
+  // 头像
+  if(s.avatar){ $("#avaImg").src = s.avatar; }
+}
+
+function openSettings(){
+  const s = loadSettings();
+  const overlay=document.createElement("div"); overlay.className="overlay";
+  overlay.innerHTML=`<div class="modal" style="width:520px;max-width:92vw"><h3>${icon("settings",18)} 设置</h3><div class="sub">个性化你的工作台</div>
+    <div class="field"><label>主题</label>
+      <div class="seg" id="s-theme">${THEMES.map(t=>`<div class="opt ${(s.theme||'light')===t.key?'on':''}" data-v="${t.key}" style="flex:0 0 auto;min-width:auto">${t.name}</div>`).join("")}</div></div>
+    <div class="field"><label>名称</label><input id="s-name" value="${attr(s.name||CONFIG.owner)}" placeholder="你的名字"/></div>
+    <div class="field"><label>个性签名</label><input id="s-slogan" value="${attr(s.slogan||CONFIG.slogan)}" placeholder="丢掉幻想，准备战斗！"/></div>
+    <div class="field"><label>头像</label>
+      <div style="display:flex;align-items:center;gap:12px">
+        <img id="s-avatar-preview" src="${$("#avaImg").src}" style="width:48px;height:48px;border-radius:12px;object-fit:cover;border:1px solid var(--border-input)"/>
+        <button class="btn ghost" id="s-avatar-btn" type="button">${icon("camera",15)} 更换头像</button>
+        <button class="btn ghost" id="s-avatar-reset" type="button">恢复默认</button>
+      </div>
+      <input type="file" id="s-avatar-file" accept="image/*" hidden/>
+    </div>
+    <div class="field"><label>背景图</label>
+      <div class="seg" id="s-bg">${BG_PRESETS.map(b=>`<div class="opt ${(s.bgKey||'default')===b.key?'on':''}" data-v="${b.key}" style="flex:0 0 auto;min-width:auto">${b.name}</div>`).join("")}</div>
+      <p class="sub" style="margin:6px 0 0;font-size:12px">也可输入图片 URL 自定义背景：</p>
+      <input id="s-bg-url" value="${attr(s.bgUrl||'')}" placeholder="https://...jpg" style="margin-top:6px"/>
+    </div>
+    <div class="modal-actions"><div class="spacer"></div>
+      <button class="btn ghost" id="s-cancel">取消</button>
+      <button class="btn" id="s-save">${icon("check",16)} 保存</button></div></div>`;
+  document.body.appendChild(overlay);
+  const close=()=>overlay.remove();
+  overlay.onclick=e=>{ if(e.target===overlay) close(); };
+  overlay.querySelector("#s-cancel").onclick=close;
+  overlay.querySelectorAll(".seg").forEach(seg=>seg.querySelectorAll(".opt").forEach(o=>o.onclick=()=>{ seg.querySelectorAll(".opt").forEach(x=>x.classList.remove("on")); o.classList.add("on"); }));
+
+  // 头像选择
+  let newAvatar="";
+  const avatarFile=overlay.querySelector("#s-avatar-file");
+  overlay.querySelector("#s-avatar-btn").onclick=()=>avatarFile.click();
+  overlay.querySelector("#s-avatar-reset").onclick=()=>{
+    newAvatar="RESET";
+    overlay.querySelector("#s-avatar-preview").src="assets/default-avatar.jpg";
+  };
+  avatarFile.onchange=e=>{
+    const f=e.target.files&&e.target.files[0]; if(!f) return;
+    compressAvatar(f,(b64)=>{ newAvatar=b64; overlay.querySelector("#s-avatar-preview").src=b64; });
+    e.target.value="";
+  };
+
+  // 保存
+  overlay.querySelector("#s-save").onclick=()=>{
+    const ns={
+      theme: (overlay.querySelector("#s-theme .on")||{}).dataset?.v || "light",
+      name: (overlay.querySelector("#s-name").value||"").trim() || CONFIG.owner,
+      slogan: (overlay.querySelector("#s-slogan").value||"").trim() || CONFIG.slogan,
+      bgKey: (overlay.querySelector("#s-bg .on")||{}).dataset?.v || "default",
+      bgUrl: (overlay.querySelector("#s-bg-url").value||"").trim(),
+    };
+    if(newAvatar==="RESET"){ ns.avatar=""; localStorage.removeItem(AVATAR_KEY); }
+    else if(newAvatar){ ns.avatar=newAvatar; saveAvatar(newAvatar); }
+    else if(s.avatar){ ns.avatar=s.avatar; }
+    saveSettings(ns);
+    applySettings();
+    if(view==="home") render();
+    toast("设置已保存","ok");
+    close();
+  };
+}
+
+// 初始化：应用保存的设置
+applySettings();
+// 绑定设置按钮
+const _settingsBtn=document.getElementById("settingsBtn");
+if(_settingsBtn) _settingsBtn.onclick=()=>openSettings();
 function esc(s){ return String(s??"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function attr(s){ return esc(s).replace(/"/g,'&quot;'); }
 
